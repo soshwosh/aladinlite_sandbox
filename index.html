@@ -12,14 +12,14 @@
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js" charset="utf-8"></script>
 
         <!-- Aladin Lite container at requested dimensions -->
-        <div id="aladin-lite-div" style="width:1400px;height:800px;"></div>
+        <div id="aladin-lite-div" style="width:500px;height:400px;"></div>
         
         <input id="DSS" type="radio" name="survey" value="P/DSS2/color"/>
         <label for="DSS">DSS Color</label>
         <input id="DSS-blue" type="radio" name="survey" value="P/DSS2/blue" />
         <label for="DSS-blue">DSS Blue</label>
-        <!-- <input id="color-riz" type="radio" name="survey" value="custom"/>
-        <label for="color-riz">Custom</label> -->
+        <input id="color-riz" type="radio" name="survey" value="https://storage.googleapis.com/hips-data/dm-hips/color_riz"/>
+        <label for="color-riz">Custom</label>
 
         <!-- Aladin Lite JS code -->
         <script type="text/javascript" src="https://aladin.cds.unistra.fr/AladinLite/api/v3/latest/aladin.js" charset="utf-8"></script>
@@ -29,18 +29,35 @@
             let aladin;
             A.init.then(() => {
                 // aladin = A.aladin('#aladin-lite-div', {survey: "P/DSS2/color", fov:1.5, target: "trifid nebula"});
+                
                 aladin = A.aladin('#aladin-lite-div');
-                aladin.setImageSurvey(aladin.createImageSurvey("Color Riz", "Color Riz Custom", "https://storage.googleapis.com/hips-data/dm-hips/color_riz/", "equatorial", 9, {imgFormat: 'fits'})); // setting a custom HiPS
-                aladin.gotoObject("venus"); 
-                aladin.setFoV(2.0); 
+                aladin.setImageSurvey(aladin.createImageSurvey(
+                    "Color Riz", 
+                    "Color Riz Custom", 
+                    "https://storage.googleapis.com/hips-data/dm-hips/color_gri/", 
+                    "equatorial", 
+                    9, 
+                    {imgFormat: 'png'})); // other options: jpg, png - these cause 404s immediately
+                    aladin.gotoObject("orion"); 
+                    aladin.setFoV(1.0); 
             });
 
             $('input[name=survey]').change(function() {
+                console.log($(this).val());
+                // aladin.setImageSurvey($(this).val());
+                // aladin.setImageLayer(aladin.newImageSurvey($(this).val()));
                 aladin.setImageSurvey($(this).val());
+                // aladin.setBaseImage($(this).val());
             });
 
-            // $('input[name=custom]').change(function() {
-            //     aladin.setImageLayer(aladin.newImageSurvey("https://storage.googleapis.com/hips-data/dm-hips/color_riz/"));
+            // document.querySelectorAll('input[name="survey"]').forEach(radio => {
+            //     radio.addEventListener('change', (event) => {
+            //         const survey = event.target.value;
+            //         console.log(survey);
+            //         aladin.setImageLayer(aladin.newImageSurvey(survey));
+            //         // aladin.setImageSurvey(survey);
+            //         // aladin.setBaseImage(survey);
+            //     });
             // });
         </script>
     </body>
